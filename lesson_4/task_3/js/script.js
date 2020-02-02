@@ -1,6 +1,6 @@
 //Генератор случайных строк для массива.
 
-/*var mainMass = [];
+var mainMass = [];
 var noRepeatMass = [];
 var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789";
 var countOfString = prompt('Enter count of massive:');
@@ -8,7 +8,7 @@ var countOfString = prompt('Enter count of massive:');
 for (var i = 0; i < countOfString; i++ ) {
    
     var str = '';
-    var countOfLetter = Math.floor(Math.random() * 3) + 1;
+    var countOfLetter = Math.floor(Math.random() * 6) + 1;
 
     for (var j = 0; j < countOfLetter; j++){
     
@@ -19,11 +19,9 @@ for (var i = 0; i < countOfString; i++ ) {
 
     mainMass[i] = str;    
 }
-console.log(mainMass);*/
+console.log(mainMass);
 
-//Сравнивает сроки и удаляет повторения(не раотает если обьеденить с функцией генеррации случайных чисел)
-
-var mainMass = ['abc','ab1223'];
+//Удаление повторов
 
 for (var i = 0; i < mainMass.length; i++) {
 
@@ -37,21 +35,23 @@ for (var i = 0; i < mainMass.length; i++) {
         
         for(var j = 0; j < firstMassOfStr.length; j++) {
             
-            while(firstMassOfStr.length!==1) {
+            for (var f = 0; f < secondMassOfStr.length; f++) {
 
-                for (var f = 0; f < secondMassOfStr.length; f++) {
-
-                    if(firstMassOfStr[j]==secondMassOfStr[f]) {
-                        firstMassOfStr.splice(j,1);
-                        secondMassOfStr.splice(f,1);
-                        f--;
-                    }
-                }           
+                if(firstMassOfStr[j]==secondMassOfStr[f]) {
+                    firstMassOfStr.splice(j,1);
+                    secondMassOfStr.splice(f,1);
+                    f--;
+                }
 
                 if (firstMassOfStr.length>lenthOfFirstMass)  {
                     j--;
                 } 
+
+                if (j < 0) {
+                    break;
+                }
             }
+
         }  
                        
         mainMass[i] = firstMassOfStr.join('');
