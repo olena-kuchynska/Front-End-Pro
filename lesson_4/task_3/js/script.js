@@ -21,6 +21,8 @@ for (var i = 0; i < countOfString; i++ ) {
 }
 console.log(mainMass);*/
 
+//Сравнивает сроки и удаляет повторения(не раотает если обьеденить с функцией генеррации случайных чисел)
+
 var mainMass = ['abc','ab1223'];
 
 for (var i = 0; i < mainMass.length; i++) {
