@@ -1,4 +1,6 @@
-var surname = prompt("Enter your Surname:");
-var name = prompt("Enter your Name:");
-var patronymic = prompt ("Enter your Patronymic:");
-alert(surname + " " + name.charAt(0) +"." + patronymic.charAt(0) + ".");
+var fullName = prompt("Enter your Surname, Name, Patronymic:");
+var firstIndexSpace = fullName.indexOf(' ');
+var lastIndexSpace = fullName.lastIndexOf(' ');
+
+var abbreviatedName = fullName.slice(0,firstIndexSpace+1) + fullName.charAt(firstIndexSpace+1) + ". " + fullName.charAt(lastIndexSpace+1) + ".";
+alert(abbreviatedName);
