@@ -51,7 +51,6 @@ for (var i = 0; i < mainMass.length; i++) {
                     break;
                 }
             }
-
         }  
                        
         mainMass[i] = firstMassOfStr.join('');
