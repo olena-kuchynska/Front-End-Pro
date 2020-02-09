@@ -12,4 +12,3 @@ alert('Your login is ' + regForLogin.test(login) + '\nAnd your password is ' + r
 
 
 
-
