@@ -13,10 +13,6 @@ for (var i = 0; i < massLenth; i++) {
 
         typeOfElement = 'null';
 
-    } else if(isNaN(mainMass[i]) && mainMass[i] !== undefined && typeof(mainMass[i]) !== 'string') {
-
-        typeOfElement = 'NaN';
-
     }
 
     console.log('Element of array ' + i + ': ' + typeOfElement + '\n');
