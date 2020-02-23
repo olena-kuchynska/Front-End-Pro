@@ -16,6 +16,8 @@ for(let i = 0; i < arrOfSentence.length; i++) {
 
 }
 
+//Второй способ
+
 /*arrOfSentence.forEach((item,index,arr) => {
     
     if(index % 2 <= 0) {
