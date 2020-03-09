@@ -5,7 +5,7 @@
 function Student() {
     let nameOfCourse = "Front-End-Pro";
     let timeOfStuding = 4;
-    this.getInfo = () => {
+    Student.prototype.getInfo = () => {
         console.log(`${nameOfCourse} lasts for ${timeOfStuding} months`);
     }
 }
