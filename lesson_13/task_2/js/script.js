@@ -12,15 +12,7 @@ class Password {
 
     validation() {
 
-        if(this.password === "123") {
-
-            Show.showCorrect();
-
-        } else {
-
-            Show.showIncorrect();
-
-        }
+        this.password === "123" ? Show.showCorrect() : Show.showIncorrect();
 
     }           
 
