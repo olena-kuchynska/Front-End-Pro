@@ -1,0 +1,15 @@
+body {
+    margin: 50px;
+}
+
+caption {
+    font-style: italic;
+}
+
+.titleRowTable {
+    font-weight: bold;
+}
+
+table, td {
+    border: 1px solid black;
+}
