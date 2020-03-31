@@ -1,0 +1,57 @@
+form {
+    width: 600px;
+    margin: 0 auto;
+    padding: 20px 30px;
+    border: 2px solid black;
+    font-family: Georgia, Times, 'Times New Roman', serif;
+    font-size: 14px;
+}
+
+h1 {
+ margin: 0;
+}
+
+p {
+    font-style: italic;
+    margin-top: 5px;
+}
+
+span {
+    color: red;
+}
+
+fieldset {
+    margin-bottom: 15px;
+}
+
+legend {
+    font-weight: bold;
+}
+
+td:first-child {
+    width: 100px;
+}
+
+table {
+     border-spacing: 10px;
+}
+
+td input, td select, td textarea {
+    width: 200px;
+}
+
+textarea {
+    height: 100px;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+label {
+    display: inline-block;
+    width: 120px;
+    margin: 5px;
+}
+
+button {
+    height: 40px;
+}
