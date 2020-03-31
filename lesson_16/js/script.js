@@ -43,6 +43,8 @@ stringName.append(nameInput);
 
 const nameOfUser = document.createElement('input');
 nameOfUser.setAttribute("type","text");
+nameOfUser.setAttribute("required","required");
+nameOfUser.setAttribute("name","nameOfUser");
 nameInput.append(nameOfUser);
 
 const stringPhone = document.createElement('tr');
@@ -57,6 +59,7 @@ stringPhone.append(phoneInput);
 
 const phoneOfUser = document.createElement('input');
 phoneOfUser.setAttribute("type","text");
+phoneOfUser.setAttribute("name","phoneOfUser");
 phoneInput.append(phoneOfUser);
 
 const stringEmail = document.createElement('tr');
@@ -75,6 +78,8 @@ stringEmail.append(emailInput);
 
 const emailOfUser = document.createElement('input');
 emailOfUser.setAttribute("type","text");
+emailOfUser.setAttribute("required","required");
+emailOfUser.setAttribute("name","emailOfUser");
 emailInput.append(emailOfUser);
 
 //Personal information
@@ -105,6 +110,8 @@ stringAge.append(ageInput);
 
 const ageOfUser = document.createElement('input');
 ageOfUser.setAttribute("type","text");
+ageOfUser.setAttribute("required","required");
+ageOfUser.setAttribute("name","ageOfUser");
 ageInput.append(ageOfUser);
 
 const stringGender = document.createElement('tr');
@@ -118,6 +125,7 @@ const genderSelect = document.createElement('td');
 stringGender.append(genderSelect);
 
 const genderOfUser = document.createElement('select');
+genderOfUser.setAttribute("name","genderOfUser");
 genderSelect.append(genderOfUser);
 
 const woman = document.createElement('option');
@@ -139,6 +147,7 @@ const qualitiesText = document.createElement('td');
 stringQualities.append(qualitiesText);
 
 const qualitiesOfUser = document.createElement('textarea');
+qualitiesOfUser.setAttribute("name","qualitiesOfUser");
 qualitiesText.append(qualitiesOfUser);
 
 //Choose animals
@@ -156,6 +165,7 @@ listOfAnimals.append(zebraLabel);
 
 const zebraCheck = document.createElement('input');
 zebraCheck.setAttribute("type","checkbox");
+zebraCheck.setAttribute("name","zebraCheck");
 zebraLabel.prepend(zebraCheck);
 
 const catLabel = document.createElement('label');
@@ -164,6 +174,7 @@ listOfAnimals.append(catLabel);
 
 const catCheck = document.createElement('input');
 catCheck.setAttribute("type","checkbox");
+catCheck.setAttribute("name","catCheck");
 catLabel.prepend(catCheck);
 
 const anacondaLabel = document.createElement('label');
@@ -172,6 +183,7 @@ listOfAnimals.append(anacondaLabel);
 
 const anacondaCheck = document.createElement('input');
 anacondaCheck.setAttribute("type","checkbox");
+anacondaCheck.setAttribute("name","anacondaCheck");
 anacondaLabel.prepend(anacondaCheck);
 
 const personLabel = document.createElement('label');
@@ -180,6 +192,7 @@ listOfAnimals.append(personLabel);
 
 const personCheck = document.createElement('input');
 personCheck.setAttribute("type","checkbox");
+personCheck.setAttribute("name","personCheck");
 personLabel.prepend(personCheck);
 
 const elephantLabel = document.createElement('label');
@@ -188,6 +201,7 @@ listOfAnimals.append(elephantLabel);
 
 const elephantCheck = document.createElement('input');
 elephantCheck.setAttribute("type","checkbox");
+elephantCheck.setAttribute("name","elephantCheck");
 elephantLabel.prepend(elephantCheck);
 
 const antelopeLabel = document.createElement('label');
@@ -196,6 +210,7 @@ listOfAnimals.append(antelopeLabel);
 
 const antelopeCheck = document.createElement('input');
 antelopeCheck.setAttribute("type","checkbox");
+antelopeCheck.setAttribute("name","antelopeCheck");
 antelopeLabel.prepend(antelopeCheck);
 
 const doveLabel = document.createElement('label');
@@ -204,6 +219,7 @@ listOfAnimals.append(doveLabel);
 
 const doveCheck = document.createElement('input');
 doveCheck.setAttribute("type","checkbox");
+doveCheck.setAttribute("name","doveCheck");
 doveLabel.prepend(doveCheck);
 
 const crabLabel = document.createElement('label');
@@ -212,6 +228,7 @@ listOfAnimals.append(crabLabel);
 
 const crabCheck = document.createElement('input');
 crabCheck.setAttribute("type","checkbox");
+crabCheck.setAttribute("name","crabCheck");
 crabLabel.prepend(crabCheck);
 
 //Sended button
