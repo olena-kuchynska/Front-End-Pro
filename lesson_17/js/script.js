@@ -82,11 +82,13 @@ class AddFormView {
 
         const addButton = document.createElement('button');
         addButton.setAttribute('class','add');
+        addButton.setAttribute('type','button');
         addButton.innerText = "Add";
         buttons.append(addButton);
 
         const showButton = document.createElement('button');
         showButton.setAttribute('class','show');
+        showButton.setAttribute('type','button');
         showButton.innerText = "Show";
         buttons.append(showButton);
         
