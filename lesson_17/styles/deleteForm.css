@@ -2,7 +2,28 @@ span {
     cursor: pointer;
 }
 
-button {
-    width: 10px;
-    height: 20px;
+li button {
+    margin: 0 5px;
+    height: 12px;
+    background: url(../images/times-solid.svg) no-repeat center center;
+    background-size: 100%;
+    background-color: none;
+    border: 0;
 }
+
+li {
+    line-height: 30px;
+}
+
+
+.container {
+    width: 300px;
+    margin: 0 auto;
+}
+
+div div, h1 {
+    text-align: center;
+}
+
+
+

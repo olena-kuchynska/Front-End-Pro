@@ -14,11 +14,11 @@ let firstStudent = new Student();
 let secondStudent = new Student();
 
 firstStudent.getName = () => { 
-    console.log('Name of first student is Oleg'); 
+    console.log("Name of first student is Oleg"); 
 }
 
 secondStudent.getSurname = () => { 
-    console.log('Surname of second student is Bulatova'); 
+    console.log("Surname of second student is Bulatova"); 
 }
 
 firstStudent.getInfo();

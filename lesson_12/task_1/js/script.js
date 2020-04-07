@@ -5,15 +5,15 @@
 class FirstAction {
 
     go() {
-        console.log('Go');
+        console.log("Go");
     }
 
     say() {
-        console.log('Hi');
+        console.log("Hi");
     }
 
     run() {
-        console.log('Run');
+        console.log("Run");
     }
 
 }
@@ -25,12 +25,12 @@ class SecondAction extends FirstAction {
 
     go() {
         super.go();
-        console.log('Go on');
+        console.log("Go on");
     }
 
     run() {
         super.run();
-        console.log('Run on');
+        console.log("Run on");
     }
 
 }
@@ -58,7 +58,7 @@ console.log(action,action2);
 }
 
 FirstAction.prototype.go = () => {
-    console.log('Go');
+    console.log("Go");
 }
 
 

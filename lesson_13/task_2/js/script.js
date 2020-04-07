@@ -22,19 +22,19 @@ class Show {
 
     static showCorrect() {
 
-        console.log('Password is correct');
+        console.log("Password is correct");
 
     }
 
     static showIncorrect() {
 
-        console.log('Password is incorrect');
+        console.log("Password is incorrect");
 
     }
     
 }
 
-let firstUser = new Password(prompt('Enter your password:'));
+let firstUser = new Password(prompt("Enter your password:"));
 
 //console.log(firstUser);
 //console.log(Password);

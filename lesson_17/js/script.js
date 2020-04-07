@@ -4,92 +4,101 @@
 При нажатии на крестик объект удаляется из массива и список перерисовывается уже без этой фамилии. 
 Подсказка: здесь 2 View*/
 
+"use strict"
 
-'use strict'
-
-let users = [{surname:'bulatova'},{surname:'bunsul'},{surname:'birshenko'},{surname:'ivanov'}];
+let users = [{surname:"bulatova"},{surname:"bunsul"},{surname:"birshenko"},{surname:"ivanov"}];
 
 class AddFormView {
 
     createForm() {
 
-        const styles = document.head.querySelector('link');
-        styles.setAttribute('href', './styles/addForm.css');
+        const styles = document.head.querySelector("link");
+        styles.setAttribute("href", "./styles/addForm.css");
 
-        const container = document.body.querySelector('div');
+        const container = document.body.querySelector("div");
         container.innerHTML = "";
 
-        const form = document.createElement('form');
+        const caption = document.createElement("h1");
+        caption.innerText = "Registration Form";
+        container.append(caption);
+
+        const info = document.createElement("p");
+        info.innerText = "Please, fill the form. Required fields are marked *";
+        container.append(info);
+
+        const form = document.createElement("form");
         container.append(form);
 
-        const infoTable = document.createElement('table');
+        const infoTable = document.createElement("table");
         form.append(infoTable);
 
-        const stringName = document.createElement('tr');
+        const stringName = document.createElement("tr");
         infoTable.append(stringName);
 
-        const nameLabel = document.createElement('td');
+        const nameLabel = document.createElement("td");
         nameLabel.innerText = "Name";
         stringName.append(nameLabel);
 
-        const nameInput = document.createElement('td');
+        const nameInput = document.createElement("td");
         stringName.append(nameInput);
 
-        const nameOfUser = document.createElement('input');
+        const nameOfUser = document.createElement("input");
         nameOfUser.setAttribute("type","text");
-        //nameOfUser.setAttribute("required","required");
         nameOfUser.setAttribute("name","name");
         nameInput.append(nameOfUser);
 
-        const stringSuname = document.createElement('tr');
+        const stringSuname = document.createElement("tr");
         infoTable.append(stringSuname);
 
-        const surnameLabel = document.createElement('td');
+        const surnameLabel = document.createElement("td");
         surnameLabel.innerText = "Surname";
         stringSuname.append(surnameLabel);
 
-        const surnameInput = document.createElement('td');
+        const star = document.createElement("span");
+        star.innerText = "*";
+        surnameLabel.append(star);
+
+        const surnameInput = document.createElement("td");
         stringSuname.append(surnameInput);
 
-        const surnameOfUser = document.createElement('input');
+        const surnameOfUser = document.createElement("input");
         surnameOfUser.setAttribute("type","text");
-        //surnameOfUser.setAttribute("required","required");
         surnameOfUser.setAttribute("name","surname");
+        surnameOfUser.setAttribute("class","surname");
         surnameInput.append(surnameOfUser);
 
-        const stringAge = document.createElement('tr');
+        const stringAge = document.createElement("tr");
         infoTable.append(stringAge);
 
-        const ageLabel = document.createElement('td');
+        const ageLabel = document.createElement("td");
         ageLabel.innerText = "Age";
         stringAge.append(ageLabel);
 
-        const ageInput = document.createElement('td');
+        const ageInput = document.createElement("td");
         stringAge.append(ageInput);
 
-        const ageOfUser = document.createElement('input');
+        const ageOfUser = document.createElement("input");
         ageOfUser.setAttribute("type","number");
-        //ageOfUser.setAttribute("required","required");
         ageOfUser.setAttribute("name","age");
         ageInput.append(ageOfUser);
 
-        const stringButtons = document.createElement('tr');
+        const stringButtons = document.createElement("tr");
         infoTable.append(stringButtons);
 
-        const buttons = document.createElement('td');
+        const buttons = document.createElement("td");
         buttons.setAttribute("colspan","2");
         stringButtons.append(buttons);
 
-        const addButton = document.createElement('button');
-        addButton.setAttribute('class','add');
-        addButton.setAttribute('type','button');
+        const addButton = document.createElement("button");
+        addButton.setAttribute("class","add");
+        addButton.setAttribute("type","button");
         addButton.innerText = "Add";
         buttons.append(addButton);
 
-        const showButton = document.createElement('button');
-        showButton.setAttribute('class','show');
-        showButton.setAttribute('type','button');
-        showButton.innerText = "Show";
+        const showButton = document.createElement("button");
+        showButton.setAttribute("class","show");
+        showButton.setAttribute("type","button");
+        showButton.innerText = "Show users";
         buttons.append(showButton);
         
     }
@@ -98,22 +107,42 @@ class AddFormView {
 
 class UsersView {
     showUsersList() {
-        const styles = document.head.querySelector('link');
-        styles.setAttribute('href', './styles/deleteForm.css');
-        const container = document.body.querySelector('.container');
+        const styles = document.head.querySelector("link");
+        styles.setAttribute("href", "./styles/deleteForm.css");
+
+        const container = document.body.querySelector(".container");
         container.innerHTML = "";
 
-        const usersList = document.createElement('ol');
+        const caption = document.createElement("h1");
+        caption.innerText = "List of Users";
+        container.append(caption);
+
+        const usersList = document.createElement("ol");
         container.append(usersList);
 
         users.forEach( item => {
-            const user = document.createElement('li');
+            const user = document.createElement("li");
             user.innerText = item.surname;
             usersList.append(user);
-            const deleteButton = document.createElement('button');
-            deleteButton.setAttribute('class','delete');
+            const deleteButton = document.createElement("button");
+            deleteButton.setAttribute("class","delete");
             user.append(deleteButton);
         });
+
+        const blockButton = document.createElement("div");
+        container.append(blockButton);
+
+        const returnButton = document.createElement("button");
+        returnButton.setAttribute("class","return");
+        returnButton.setAttribute("type","button");
+        returnButton.innerText = "Return to Form";
+        blockButton.append(returnButton);
+
+        /* const updateButton = document.createElement("button");
+        updateButton.setAttribute("class","update");
+        updateButton.setAttribute("type","button");
+        updateButton.innerText = "Update";
+        container.append(updateButton); */
     }
 }
 
@@ -133,15 +162,21 @@ class User {
 
     addUser() {
         const infoUser = document.querySelectorAll("input");
-        let newUser = {};
+        const surnameUser = document.querySelector(".surname");
 
-        infoUser.forEach(item => {
-            newUser[item.name] = item.value;
-            item.value = "";
-        });
+        if (surnameUser.value === "") {
+            alert("Please,fill in all information for registration!");
+        } else {
+            let newUser = {};
 
-        users.push(newUser);
-        console.log(users);        
+            infoUser.forEach(item => {
+                newUser[item.name] = item.value;
+                item.value = "";           
+            });
+
+            users.push(newUser);
+            console.log(users);  
+        }      
     }
 
     deleteUser(events) {
@@ -153,7 +188,7 @@ class User {
             }
         });
         console.log(users);
-        this.handleShowUsers();
+        //console.log(this);
     }
 }
 
@@ -168,36 +203,56 @@ class UsersController {
     }
 
     handleShowUsers() {
+        //console.log(this);
         this.model.handleShowUsers();
         this.actionForShow();
     }
 
+
     actionForAdd() {
-        const addButton =  document.body.querySelector('.add');
-        addButton.addEventListener('click', this.model.addUser);
-        const showButton =  document.body.querySelector('.show');        
-        showButton.addEventListener('click', this.handleShowUsers);
+        let showUsers = this.handleShowUsers;
+        let innerContext = this;
+        function actionShow(){
+            showUsers.call(innerContext);
+        }
+        const addButton =  document.body.querySelector(".add");
+        addButton.addEventListener("click", this.model.addUser);
+        const showButton =  document.body.querySelector(".show");        
+        showButton.addEventListener("click", actionShow);
     }
 
     actionForShow() {
+        let showUsers = this.handleShowUsers;
+        let innerContext = this;
+        function updateUsers(){
+            showUsers.call(innerContext);
+        }
+
+        const actionDelete = document.body.querySelector("ol");
+        actionDelete.addEventListener("click",  this.model.deleteUser);
+        actionDelete.addEventListener("click", updateUsers);
+
+        let showForm = this.handleShowForm;
+        function returnToForm(){
+            showForm.call(innerContext);
+        }
+
+        const returnButton =  document.body.querySelector(".return");        
+        returnButton.addEventListener("click", returnToForm);
         
-        const deleteButton = document.body.querySelectorAll('.delete');
-        deleteButton.forEach(item => {
-            item.addEventListener('click', this.model.deleteUser);
-        });
-        /* const returnButton =  document.body.querySelector('.return');        
-        returnButton.addEventListener('click', this.handleShowForm); */
+        /* const updateButton =  document.body.querySelector(".update");        
+        updateButton.addEventListener("click", updateUsers); */
     }
 
 
 }
 
+document.addEventListener("DOMContentLoaded", function() {
+
 const addFormView = new AddFormView();
 const usersView = new UsersView();
 const model = new User(addFormView, usersView);
 const controller = new UsersController(model);
-
-document.addEventListener('DOMContentLoaded', function() {
 
 controller.handleShowForm();
 

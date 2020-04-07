@@ -5,10 +5,10 @@ function getLetter(str) {
     var count = str.match(reg);
     console.log(count);
     if(count===null) {
-    return 'В фразе нет согласных букв';
+    return "В фразе нет согласных букв";
     } else {
     return count.length;
     }
     
     }
-    console.log('Кол-во гласных букв фразе: ' + getLetter('Введите цвет сфетофора'));
+    console.log("Кол-во гласных букв фразе: " + getLetter("Введите цвет сфетофора"));

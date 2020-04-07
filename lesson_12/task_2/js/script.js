@@ -7,11 +7,11 @@ let zoo = [];
 class Show {
 
     showCreate(nameOfAnimal) {
-        console.log(nameOfAnimal + ' was created');
+        console.log(nameOfAnimal + " was created");
     }
 
     showDelete(nameOfAnimal) {
-        console.log(nameOfAnimal + ' was deleted');
+        console.log(nameOfAnimal + " was deleted");
     }
 }
 
@@ -45,7 +45,7 @@ class Animals extends WatchAnimals {
                 zoo.splice(i,1);
                 super.watchDeleate(this.nameOfAnimal);            
             } else {
-                console.log('We don\'t have this animal');
+                console.log("We don\"t have this animal");
             }
         });        
     }
@@ -55,7 +55,7 @@ class Animals extends WatchAnimals {
 //console.log(Show.prototype);
 //console.log(WatchAnimals.prototype);
 
-let zebra = new Animals('zebra');
+let zebra = new Animals("zebra");
 console.log(zebra);
 
 zebra.addAnimals();

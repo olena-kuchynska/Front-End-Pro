@@ -1,5 +1,5 @@
 var primeryMass = [];
-var secondaryMass = [12,'abcd'];
+var secondaryMass = [12,"abcd"];
 
 var firstPartMass = prompt("Enter first value of massive:");
 var secondPartMass = prompt("Enter second value of massive:");
@@ -10,7 +10,7 @@ primeryMass.push(secondPartMass);
 primeryMass.push(thirdPartMass);
 
 var concatMass = primeryMass.concat(secondaryMass);
-var stringOfMass = concatMass.join('');
+var stringOfMass = concatMass.join("");
 
 console.log(stringOfMass.length);
 

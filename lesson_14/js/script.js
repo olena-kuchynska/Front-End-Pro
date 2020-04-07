@@ -4,7 +4,7 @@
  Массив и для людей и для животных один, но люди находятся вначале, животные в конце(животные добавляются в конец, люди в начало). 
  Дергайте контроллер просто вручную(предавая нужные данные просто в метод). */
 
- 'use strict'
+ "use strict"
 
 let nature = [];
 let massege = 0;
@@ -17,14 +17,14 @@ class NatureController {
     action(message) {
 
         if (massege) {
-            let [action, type, name] = message.split(' ');
+            let [action, type, name] = message.split(" ");
 
-            (action === 'add') ? this.handleAdd(action, type, name) :
-            (action === 'delete') ? this.handleDelete(action, type, name) :
-            console.log('Uncorrect data!');
+            (action === "add") ? this.handleAdd(action, type, name) :
+            (action === "delete") ? this.handleDelete(action, type, name) :
+            console.log("Uncorrect data!");
 
         } else {
-            console.log('The End');
+            console.log("The End");
         }
         
     }
@@ -45,9 +45,9 @@ class Inhabitant {
     }
 
     addInhab(action, type, name) {
-        if(type === 'human') {
+        if(type === "human") {
             nature.unshift({type, name});            
-        } else if(type === 'animal') {
+        } else if(type === "animal") {
             nature.push({type, name});
         }
 
@@ -85,7 +85,7 @@ let inhabitant = new Inhabitant(view);
 let controller = new NatureController(inhabitant);
 
 do {
-    massege = prompt('Add actions, type and name of inhabitant');
+    massege = prompt("Add actions, type and name of inhabitant");
     controller.action(massege);
 } while(massege);
 
@@ -98,13 +98,13 @@ class NutureController {
     }
 
     action(message) {
-        const [action,type,name] = message.toLowerCase().split(' ');
+        const [action,type,name] = message.toLowerCase().split(" ");
 
-        (action === 'add' && type === 'animal') ? this.handleAnimalAdd(action,type,name) :
-        (action === 'add' && type === 'human') ? this.handleHumanAdd(action,type,name) :
-        (action === 'delete' && type === 'animal') ? this.handleAnimalDelete(action,type,name) :
-        (action === 'delete' && type === 'human') ? this.handleHumanDelete(action,type,name):
-        console.log('Uncorrect data!');
+        (action === "add" && type === "animal") ? this.handleAnimalAdd(action,type,name) :
+        (action === "add" && type === "human") ? this.handleHumanAdd(action,type,name) :
+        (action === "delete" && type === "animal") ? this.handleAnimalDelete(action,type,name) :
+        (action === "delete" && type === "human") ? this.handleHumanDelete(action,type,name):
+        console.log("Uncorrect data!");
     }
 
     handleAnimalAdd(action,type,name) {

@@ -1,12 +1,12 @@
 //2) Дано предложение. Найти слова, содержащие буквы в верхнем регистре. 
 //В этих словах заменить маленький буквы на большие, а большие на маленькие.
-//'hello MY name is JavaScript and I like your code styLe'
+//"hello MY name is JavaScript and I like your code styLe"
 
-var sentence = 'hello MY name is JavaScript and I like your code styLe';
-var stringToMass = sentence.split(' ');
+var sentence = "hello MY name is JavaScript and I like your code styLe";
+var stringToMass = sentence.split(" ");
 var stringLength = stringToMass.length;
 
-console.log('Current sentence: ' + sentence);
+console.log("Current sentence: " + sentence);
 
 for(var i = 0; i < stringLength; i++) {
 
@@ -15,7 +15,7 @@ for(var i = 0; i < stringLength; i++) {
 
     if(regUpperCase.test(stringToMass[i])) {
 
-        var wordToMass = stringToMass[i].split('');
+        var wordToMass = stringToMass[i].split("");
         var wordLength = wordToMass.length;
         //console.log(wordToMass);
 
@@ -36,13 +36,13 @@ for(var i = 0; i < stringLength; i++) {
             wordToMass[j] = letter;
         }
 
-        stringToMass[i] = wordToMass.join('');
+        stringToMass[i] = wordToMass.join("");
         
     } 
 
 }
 
-var newSentence = stringToMass.join(' ');
+var newSentence = stringToMass.join(" ");
 
-console.log('New sentence: ' + newSentence);
+console.log("New sentence: " + newSentence);
 

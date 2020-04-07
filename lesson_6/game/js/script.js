@@ -1,4 +1,4 @@
-var moves = ['rock','scissors','paper'];
+var moves = ["rock","scissors","paper"];
 var indexOfComputer,
     resultOfGame,
     user;
@@ -6,10 +6,10 @@ var indexOfComputer,
 for(;user !== null;) {
 
     indexComputer = parseInt(Math.random()*moves.length);
-    user = prompt('Computer make your move. Your turn (enter rock, scissors or paper):');
+    user = prompt("Computer make your move. Your turn (enter rock, scissors or paper):");
 
     if(user === null) {
-        alert('Game over!');
+        alert("Game over!");
         break;
     }
 
@@ -19,17 +19,17 @@ for(;user !== null;) {
     if(moves.includes(userChoice)) {
                
         if(indexUser == indexComputer) {
-            resultOfGame = 'draw!';
+            resultOfGame = "draw!";
         } else if((indexUser === 2 && indexComputer === 0) || indexUser<indexComputer) {
-            resultOfGame = 'you win!';
+            resultOfGame = "you win!";
         } else {
-            resultOfGame = 'you lose!';
+            resultOfGame = "you lose!";
         }
         
-        alert('Computer choice: ' + moves[indexComputer] + '\nYour choice: ' + userChoice + '\nResulat of Game: ' + resultOfGame.toUpperCase());
+        alert("Computer choice: " + moves[indexComputer] + "\nYour choice: " + userChoice + "\nResulat of Game: " + resultOfGame.toUpperCase());
 
     } else {
-        alert('You have entered incorrect data!');
+        alert("You have entered incorrect data!");
     }
 
 }

@@ -2,18 +2,18 @@
 где свойства будут значениями, а значения ключами.*/
 
 let firstObject = {
-    name: 'Olena',
+    name: "Olena",
     age: 24,
-    dateOfBith: '01.01.1996',
-    today: '23.02.20',
-    gender: 'woman'    
+    dateOfBith: "01.01.1996",
+    today: "23.02.20",
+    gender: "woman"    
 }
 
 let secondObject = {
-    name: 'Olena',
+    name: "Olena",
     age: 24,
-    dateOfBith: '01.01.1996',
-    today: '22.02.20',  
+    dateOfBith: "01.01.1996",
+    today: "22.02.20",  
 }
 console.log(firstObject);
 console.log(secondObject);

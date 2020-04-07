@@ -3,8 +3,8 @@
 Если одинаковый элемент строка, в которой больше 5 символов, добавить в финальный массив FSTR вместо элемента. 
 Остальные совпадающие элементы, просто добавить в массив.*/
 
-var firstArray = [1,0,205,NaN,'abcd',true,false,120,null,'Hi, Google!',56,undefined];
-var secondArray = [205,120,true,34,1,true,'abcd',56,'Hi, Google!',3];
+var firstArray = [1,0,205,NaN,"abcd",true,false,120,null,"Hi, Google!",56,undefined];
+var secondArray = [205,120,true,34,1,true,"abcd",56,"Hi, Google!",3];
 
 function getSameElem(firstArray,secondArray) {
 
@@ -29,13 +29,13 @@ function getChange(valueOfArr) {
 
     var valueLenth = valueOfArr.length;
 
-    if(typeof(valueOfArr) === 'number' && valueOfArr % 5 === 0) {
+    if(typeof(valueOfArr) === "number" && valueOfArr % 5 === 0) {
         
-        return 'FIVE';
+        return "FIVE";
 
-    } else if(typeof(valueOfArr) === 'string' && valueLenth > 5) {
+    } else if(typeof(valueOfArr) === "string" && valueLenth > 5) {
         
-        return 'FSTR';
+        return "FSTR";
 
     } else {
 
@@ -61,7 +61,7 @@ function getUniqueArr(arr) {
 
 }
 
-console.log('First Array: ' + firstArray);
-console.log('Second Array: ' + secondArray);
+console.log("First Array: " + firstArray);
+console.log("Second Array: " + secondArray);
 
-console.log('The Same elemets of these arrays: ' + getSameElem(firstArray,secondArray));
+console.log("The Same elemets of these arrays: " + getSameElem(firstArray,secondArray));
