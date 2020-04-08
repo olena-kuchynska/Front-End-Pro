@@ -211,9 +211,9 @@ class UsersController {
 
     actionForAdd() {
         let showUsers = this.handleShowUsers;
-        let innerContext = this;
+        let currentContext = this;
         function actionShow(){
-            showUsers.call(innerContext);
+            showUsers.call(currentContext);
         }
         const addButton =  document.body.querySelector(".add");
         addButton.addEventListener("click", this.model.addUser);
@@ -223,9 +223,9 @@ class UsersController {
 
     actionForShow() {
         let showUsers = this.handleShowUsers;
-        let innerContext = this;
+        let currentContext = this;
         function updateUsers(){
-            showUsers.call(innerContext);
+            showUsers.call(currentContext);
         }
 
         const actionDelete = document.body.querySelector("ol");
@@ -234,7 +234,7 @@ class UsersController {
 
         let showForm = this.handleShowForm;
         function returnToForm(){
-            showForm.call(innerContext);
+            showForm.call(currentContext);
         }
 
         const returnButton =  document.body.querySelector(".return");        
