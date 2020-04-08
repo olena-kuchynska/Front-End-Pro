@@ -6,12 +6,10 @@
 
 "use strict"
 
-let users = [{surname:"bulatova"},{surname:"bunsul"},{surname:"birshenko"},{surname:"ivanov"}];
-
 class FormView {
     createForm() {
         const styles = document.head.querySelector("link");
-        styles.setAttribute("href", "./styles/addForm.css");
+        styles.setAttribute("href", "./styles/styles_form.css");
 
         const container = document.body.querySelector("div");
 
@@ -118,9 +116,9 @@ class AddFormView extends FormView {
 }
 
 class UsersView {
-    showUsersList() {
+    showUsersList(users) {
         const styles = document.head.querySelector("link");
-        styles.setAttribute("href", "./styles/deleteForm.css");
+        styles.setAttribute("href", "./styles/list_form.css");
 
         const container = document.body.querySelector(".container");
         container.innerHTML = "";
@@ -134,6 +132,7 @@ class UsersView {
 
         users.forEach( item => {
             const user = document.createElement("li");
+            user.id = item.id;
             user.innerText = item.surname;
             usersList.append(user);
             const deleteButton = document.createElement("button");
@@ -191,6 +190,11 @@ class User {
     this.viewAddForm = viewAddForm;
     this.viewEditForm = viewEditForm;
     this.viewUsers = viewUsers;
+    this.users = JSON.parse(localStorage.getItem("users")) || []
+    }
+
+    saveUser(users) {
+        localStorage.setItem("users", JSON.stringify(users));
     }
 
     handleAddForm() {
@@ -198,7 +202,7 @@ class User {
     }
 
     handleShowUsers() {
-        this.viewUsers.showUsersList();
+        this.viewUsers.showUsersList(this.users);
     }
 
     handleEditForm() {
@@ -206,49 +210,53 @@ class User {
         this.viewEditForm.createForm();
     }
 
-    addUser() {
+    addUser = () => {
         const infoUser = document.querySelectorAll("input");
         const surnameUser = document.querySelector(".surname");
 
         if (surnameUser.value === "") {
             alert("Please,fill in all information for registration!");
         } else {
-            let newUser = {};
+            
+            let id = this.users.length > 0 ? this.users[this.users.length - 1].id + 1 : 1;
+            let newUser = {id};
 
-            infoUser.forEach(item => {
+            infoUser.forEach(item => {                
                 newUser[item.name] = item.value;
                 item.value = "";           
             });
 
-            users.push(newUser);
-            console.log(users);  
+            this.users.push(newUser);
+            this.saveUser(this.users);
+            console.log(this.users);  
         }      
     }
 
-    deleteUser(events) {
+    deleteUser = (events) => {
         const currentElement = events.target;
-        const infoUser = events.target.parentElement.innerText;
+        const idUser = events.target.parentElement.id;
         
         if(currentElement.getAttribute("class") === "delete") {
         
-            users.forEach((item, i) => {
-                if (item.surname === infoUser) {
-                    users.splice(i, 1);
+            this.users.forEach((item, i) => {
+                if (item.id == idUser) {
+                    this.users.splice(i, 1);
                 }
-            });
-            console.log(users); 
+            });            
+            this.saveUser(this.users);            
+            console.log(this.users);
         }
 
     }
 
-    loadInfo(events) {
-        const infoUser = events.target.parentElement.innerText;
+    loadInfo= (currentUser) => {
         const name = document.querySelector(".name");
         const surname = document.querySelector(".surname");
         const age = document.querySelector(".age");
               
-            users.forEach((item, i) => {
-                if (item.surname === infoUser) {
+            this.users.forEach(item => {
+                //console.log(item.id);
+                if (item.id == currentUser) {
                     
                     surname.value = item.surname;
 
@@ -258,38 +266,30 @@ class User {
 
                     if(item.age) {
                         age.value = item.age;
-                    } 
+                    }                   
                 }
-            });
+            });                    
     }
 
-    editUser(currentUser) {
-        
-        console.log(currentUser);
-        //const infoUser = document.querySelectorAll("input");
-        /* const surname = document.querySelector(".surname");
+    editUser = (currentUser) => {
+        const surname = document.querySelector(".surname");
         const name = document.querySelector(".name");
         const age = document.querySelector(".age");
 
-        users.forEach((item, i) => {
-            if (item.surname === surname.value) {                
-                user[surname.name] = item.value;
-                if(item.name) {
-                    name.value = item.name;
+        this.users.forEach(item => {
+            if (item.id == currentUser) {                
+                item.surname = surname.value;
+                if(name.value) {
+                    item.name = name.value;
                 }
 
-                if(item.age) {
-                    age.value = item.age;
+                if(age.value) {
+                    item.age = age.value;
                 } 
             }
         });
-        console.log(users);
-
-        infoUser.forEach(item => {
-            newUser[item.name] = item.value;
-            item.value = "";           
-        });*/  
-
+        this.saveUser(this.users);
+        console.log(this.users);
     }     
     
 }
@@ -311,8 +311,8 @@ class UsersController {
     }
 
     handleEditForm(currentElement) {
-        this.loadEditForm();
-        this.model.handleEditForm();
+        this.model.handleEditForm();        
+        this.model.loadInfo(currentElement);
         this.actionForEdit(currentElement);
     }
 
@@ -339,7 +339,7 @@ class UsersController {
         let editForm = this.handleEditForm;
         function showEditUsers(events) {
             let currentElement = events.target;
-            let currentUser = currentElement.parentElement.innerText;
+            let currentUser = currentElement.parentElement.id;
             if(currentElement.getAttribute("class") === "edit") {
                 editForm.call(currentContext,currentUser);
             }                  
@@ -359,11 +359,6 @@ class UsersController {
         returnButton.addEventListener("click", returnToForm);
     }
 
-    loadEditForm() {
-        const editForm = document.querySelector(".container");
-        editForm.addEventListener("click",this.model.loadInfo);        
-    }
-
     actionForEdit(currentUser) {
         let showUsers = this.handleShowUsers;
         let currentContext = this;
@@ -374,7 +369,7 @@ class UsersController {
             currentContext.model.editUser(currentUser);
         }
         const editButton = document.querySelector(".ready");
-        editButton.addEventListener("click",this.model.editUser);
+        editButton.addEventListener("click",editUser);
         editButton.addEventListener("click",updateUsers);
         
     }
@@ -391,6 +386,5 @@ const model = new User(addFormView, usersView, editFormView);
 const controller = new UsersController(model);
 
 controller.handleAddForm();
-//setTimeout(editFormView.createForm(),2000);
 
 });
