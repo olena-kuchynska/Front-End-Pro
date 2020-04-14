@@ -1,0 +1,35 @@
+span {
+    cursor: pointer;
+}
+
+.delete, .edit{
+    margin: 0 5px;
+    height: 12px;
+    background-size: 100%;
+    background-color: none;
+    border: 0;
+}
+
+.delete {
+    background: url(../images/times-solid.svg) no-repeat center center;
+}
+
+.edit {
+    background: url(../images/pen-solid.svg) no-repeat center center;
+}
+
+li {
+    line-height: 30px;
+}
+
+.container {
+    width: 300px;
+    margin: 0 auto;
+}
+
+div div, h1 {
+    text-align: center;
+}
+
+
+
