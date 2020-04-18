@@ -1,0 +1,38 @@
+.mikki {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10%;
+}
+
+.jerry{
+    position: absolute;
+    top: 0;
+    right: 70%;    
+    width: 11%;
+}
+
+.bang,
+.textOfBang {  
+    display: none;
+}
+
+.bang {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.textOfBang {
+    position: relative;
+    width: 55%;
+    top: calc(50% - 78px);
+    left: calc(50% - 213px);
+}
+
+.boom {
+    position: absolute;
+    width: 1598px;
+    height: 1066px;
+    display: none;
+}
