@@ -86,4 +86,3 @@ function createCurrency() {
 document.addEventListener("DOMContentLoaded", () => {
   createCurrency();
 });
-
