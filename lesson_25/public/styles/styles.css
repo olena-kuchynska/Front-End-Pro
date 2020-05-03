@@ -1,0 +1,13 @@
+div {
+    width: 250px;
+}
+
+button {
+    width: 100px;
+    font-weight: bold;
+}
+
+div, button {
+    display: block;
+    margin: 10px auto;
+}
