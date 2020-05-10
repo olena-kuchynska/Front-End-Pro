@@ -1,8 +1,9 @@
 class TaskView {
-    createTask(action) {
+    createTask(action, services) {
         const actionBlock = document.querySelector(".action-block");
-        actionBlock.innerHTML = "";
-        actionBlock.style.display = "block";    
+        actionBlock.innerHTML = ""; 
+        /*actionBlock.style.display = "block";  */
+        actionBlock.style.width= "35%";  
 
         const cancelButton =  document.createElement("button");
         cancelButton.setAttribute("type", "button");
@@ -20,7 +21,6 @@ class TaskView {
 
         const taskInfo = document.createElement("p");
         taskInfo.setAttribute("class","task-info");
-        taskInfo.innerHTML = "I need a plumber to unblock a toilet, my daughter's teddy bear sank in the toliet.";
         addInfo.append(taskInfo);
 
         const locationInfo = document.createElement("p");
@@ -29,6 +29,7 @@ class TaskView {
 
         const actionButton =  document.createElement("button");
         actionButton.setAttribute("class","action-button");
+        actionButton.innerText = action;
         addInfo.append(actionButton);
 
         const locationBlock = document.createElement("div");
@@ -41,17 +42,34 @@ class TaskView {
         locationBlock.append(captionLocation);
 
         const inputLocation = document.createElement("input");
-        inputLocation.setAttribute("class","input-location");
+        inputLocation.setAttribute("class","input-location");        
+        inputLocation.placeholder = "Enter location";
         locationBlock.append(inputLocation);
 
         const typeService = document.createElement("div");
         typeService.setAttribute("class","type-service");
         actionBlock.append(typeService);
 
-        const captionServies = document.createElement("p");
-        captionServies.setAttribute("class","caption");
-        captionServies.innerText = "type service";
-        typeService.append(captionServies);
+        const captionServices = document.createElement("p");
+        captionServices.setAttribute("class","caption");
+        captionServices.innerText = "type service";
+        typeService.append(captionServices);
+
+        const serviceBlock = document.createElement("div");
+        typeService.append(serviceBlock);
+
+        services.forEach( item => {            
+            const service = document.createElement("div");
+            service.id = item.id;
+            service.innerText = item.type;
+            serviceBlock.append(service);
+            const imageButton = document.createElement("button");
+            imageButton.setAttribute("class","type-button");
+            imageButton.style.backgroundImage = `url(../images/${item.type}.png)`;
+            imageButton.style.width = "100%";
+            imageButton.style.height = "100%";
+            service.prepend(imageButton);
+        });
 
         const taskBlock = document.createElement("div");
         taskBlock.setAttribute("class","task-block");
@@ -72,9 +90,12 @@ class TaskView {
         descriptionBlock.append(captionDescription);
 
         const inputDescription = document.createElement("textarea");
-        inputDescription.setAttribute("class","input-description");
+        inputDescription.setAttribute("class","description");
         inputDescription.placeholder = "Enter description";
         descriptionBlock.append(inputDescription);
+        /* setTimeout(() => {
+            actionBlock.style.opacity = "1"; 
+        },500);  */   
     }
 }
 
@@ -98,17 +119,17 @@ class ListTasksView {
 }
 
 class AddForm {
-    constructor(view, tasks) {
+    constructor(view, services) {
         this.view = view;
-        this.tasks = tasks;
+        this.services = services;
     }
 
-    saveTask(tasks) {
-        localStorage.setItem("tasks", JSON.stringify(tasks));
+    saveTask(services) {
+        localStorage.setItem("services", JSON.stringify(services));
     }
 
     handleCreateTasks() {
-        this.view.createTask(this.tasks);
+        this.view.createTask("create task", this.services);
     }
 
 }
@@ -122,17 +143,17 @@ class EditForm {
 }
 
 class ListForm {
-    constructor(view, tasks) {
+    constructor(view, services) {
         this.view = view;
-        this.tasks = tasks;
+        this.services = services;
     }
 
-    saveTask(tasks) {
-        localStorage.setItem("tasks", JSON.stringify(tasks));
+    saveTask(services) {
+        localStorage.setItem("services", JSON.stringify(services));
     }
 
     handleShowTasks() {
-        this.view.showTask(this.tasks);
+        this.view.showTask(this.services);
     }
 
     /* deleteUser = (currentTask) => {
@@ -162,10 +183,35 @@ class AddFormControll {
     actionforAdd() {
         const actionBlock = document.body.querySelector(".action-block");
         const cancelButton =  document.body.querySelector(".cancel");
-        cancelButton.addEventListener("click", () => {
-            actionBlock.style.display = "none";
-        }); 
+        const location = document.body.querySelector(".input-location");
+        const description = document.body.querySelector(".description");
+        const taskInfo = document.body.querySelector(".task-info");
+        
+        let taskText = "I need a plumber to unblock a toilet", descriptionText;
 
+        description.addEventListener("change", () => { 
+            descriptionText = description.value.toLowerCase().bold(); 
+            if(!taskText) {
+                taskInfo.innerHTML = `${descriptionText}.`;
+            } else {
+                taskInfo.innerHTML = `${taskText}, ${descriptionText}.`;
+            }                    
+        });
+        
+        location.addEventListener("change", () => {
+            const locationInfo = document.body.querySelector(".location-info");
+            locationInfo.innerText = `My address is ${location.value}`;
+        });
+        
+        cancelButton.addEventListener("click", () => {
+            actionBlock.style.width = "0";
+            cancelButton.style.display = "none";           
+            /* actionBlock.style.opacity = "0"; 
+            setTimeout(() => {
+                actionBlock.style.display = "none"             
+            }, 500); */
+
+        });
     }
   
 
@@ -243,13 +289,13 @@ class PubSub {
 
 document.addEventListener("DOMContentLoaded", function() {
 
-    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    let services = JSON.parse(localStorage.getItem("services")) || [{id: 1, type:"electician"}, {id: 2, type:"plumber"}, {id: 3, type:"gardener"}, {id: 4, type:"housekeeper"}, {id: 5, type:"cook"}];
     
     const listTasksView = new ListTasksView();
     const taskView = new TaskView();
 
-    const listForm = new ListForm(listTasksView, tasks);
-    const addForm = new AddForm(taskView, tasks);
+    const listForm = new ListForm(listTasksView, services);
+    const addForm = new AddForm(taskView, services);
 
     const subscribers = new PubSub();
 

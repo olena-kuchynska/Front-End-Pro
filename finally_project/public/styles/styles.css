@@ -15,23 +15,13 @@ body {
   height: 100%;
 }
 
-/* input, */ 
-button {
-  outline: none;
-}
-
-/*
- * Сброс стилей у кнопки.
- * Придётся немного поработать, чтобы получить нейтральный вид.
-*/
 button {
   padding: 0;
+  outline: none;
   border: none;
   font: inherit;
   color: inherit;
   background-color: transparent;
-  /* отображаем курсор в виде руки при наведении; некоторые
-  считают, что необходимо оставлять стрелочный вид для кнопок */
   cursor: pointer;
 }
 
@@ -44,7 +34,6 @@ button {
   font-size: 16px;
   font-weight: 500;
   color: #4c71fe;
-  cursor: pointer;
   background-color: #fff;
   letter-spacing: 1px;
 }
@@ -65,14 +54,18 @@ button {
 
 .action-block {
   float: right;
-  display: none;
-  width: 35%;
+  /* display: none;
+  opacity: 0;
+  width: 35%; */
+  width: 0;
   height: 100%;  
   background-color: #fff;
+  /* transition: opacity 0.5s linear; */
+  transition: width 0.5s ease-in-out;
 }
 
-.action-block div {
-  padding: 20px 40px;
+.action-block > div {
+  padding: 10px 40px;
   border-bottom: 1px solid #f1f1f1;
 }
 
@@ -86,12 +79,11 @@ button {
 }
 
 p {
-  margin: 10px;
+  margin: 5px;
 }
 
 .add-info {
   background-color: #f1f1f1;
-
 }
 
 .caption {
@@ -101,21 +93,37 @@ p {
 }
 
 input,
-textarea,
-.task-info {
+textarea {
   border: none;
+  width: 100%;
   font-size: 16px;
-  font-stretch: ultra-condensed;
+  height: 26px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: 500;
+  margin-left: 10px;
+  text-transform: capitalize;
 }
 
-input {
-  width: calc(100% - 2px);
+
+.task-info {
+  font-size: 18px;
 }
 
-.input-description {
-    height: 100px; /* Высота поля в пикселах */
-    width: calc(100% - 6px);    
+.description {       
     resize: none;
+}
+
+.action-button {  
+  background-color: #4c71fe;
+  border-radius: 3px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 10px;
+  padding: 5px 10px;
+  font-size: 16px;
+}
+
+.task-block {
+  display: none;
 }
