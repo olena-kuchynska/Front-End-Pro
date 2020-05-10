@@ -55,19 +55,21 @@ class TaskView {
         captionServices.innerText = "type service";
         typeService.append(captionServices);
 
-        const serviceBlock = document.createElement("div");
+        const serviceBlock = document.createElement("div");        
+        serviceBlock.setAttribute("class","servise-list");
         typeService.append(serviceBlock);
 
         services.forEach( item => {            
             const service = document.createElement("div");
+            service.setAttribute("class","servise");
             service.id = item.id;
-            service.innerText = item.type;
             serviceBlock.append(service);
+            const serviceName = document.createElement("p");            
+            serviceName.innerText = item.type;
+            service.append(serviceName);
             const imageButton = document.createElement("button");
             imageButton.setAttribute("class","type-button");
-            imageButton.style.backgroundImage = `url(../images/${item.type}.png)`;
-            imageButton.style.width = "100%";
-            imageButton.style.height = "100%";
+            imageButton.style.background = `url(./images/${item.type}.png) no-repeat center center`;
             service.prepend(imageButton);
         });
 
@@ -186,6 +188,8 @@ class AddFormControll {
         const location = document.body.querySelector(".input-location");
         const description = document.body.querySelector(".description");
         const taskInfo = document.body.querySelector(".task-info");
+        const serviceList = document.body.querySelector(".servise-list");
+        const taskBlock = document.body.querySelector(".task-block");
         
         let taskText = "I need a plumber to unblock a toilet", descriptionText;
 
@@ -202,6 +206,20 @@ class AddFormControll {
             const locationInfo = document.body.querySelector(".location-info");
             locationInfo.innerText = `My address is ${location.value}`;
         });
+
+        serviceList.addEventListener("click", (event) => {
+            
+            for (let i = 0; i < serviceList.childNodes.length; i++) {
+                for (let j=0; j <  serviceList.childNodes[i].childNodes.length; j++ ) {
+                    serviceList.childNodes[i].childNodes[j].style.border = "none";
+                }                
+            }
+            const currentClick = event.target.parentElement;          
+            taskBlock.style.display = "block";
+            currentClick.childNodes[0].style.border = "1px solid #4c71fe";
+            currentClick.childNodes[0].style.borderRadius = "100%";
+        })
+
         
         cancelButton.addEventListener("click", () => {
             actionBlock.style.width = "0";
