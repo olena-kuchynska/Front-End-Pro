@@ -54,6 +54,7 @@ button {
 
 .action-block {
   float: right;
+  overflow: auto;
   /* display: none;
   opacity: 0;
   width: 35%; */
@@ -130,24 +131,41 @@ textarea {
   display: none;
 }
 
-.servise-list {
+.service-list {
   height: 100px;
   display: flex;
   flex-direction: row;
   text-align: center;
   text-transform: capitalize;
-  justify-content: space-between;
+  justify-content: space-between;  
 }
 
 .type-button {  
   display: block;
   width: 75px;
   height: 100%;
-  margin: 0 auto;    
+  margin: 0 auto;
+  border-radius: 100%;   
 }
 
-.servise {
+.service {
  width: 100%;
  height: 75px;
  cursor: pointer;
 }
+
+.task-name-list {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  justify-content: space-between;
+  flex-wrap:wrap;
+}
+
+.task-name {
+  width: 100px;
+  margin-bottom: 5px;
+  padding: 5px;  
+  border-radius: 30px;
+}
+

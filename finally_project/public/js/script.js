@@ -56,12 +56,12 @@ class TaskView {
         typeService.append(captionServices);
 
         const serviceBlock = document.createElement("div");        
-        serviceBlock.setAttribute("class","servise-list");
+        serviceBlock.setAttribute("class","service-list");
         typeService.append(serviceBlock);
 
         services.forEach( item => {            
             const service = document.createElement("div");
-            service.setAttribute("class","servise");
+            service.setAttribute("class","service");
             service.id = item.id;
             serviceBlock.append(service);
             const serviceName = document.createElement("p");            
@@ -78,9 +78,12 @@ class TaskView {
         actionBlock.append(taskBlock);
 
         const captionTask = document.createElement("p");
-        captionTask.setAttribute("class","caption");       ;
-        captionTask.innerText = "service";
+        captionTask.setAttribute("class","caption");
         taskBlock.append(captionTask);
+
+        const taskListBlock = document.createElement("div");                    
+        taskListBlock.setAttribute("class","task-name-list");        
+        taskBlock.append(taskListBlock);
 
         const descriptionBlock = document.createElement("div");
         descriptionBlock.setAttribute("class","description-block");
@@ -105,13 +108,13 @@ class ListTasksView {
     showTask(tasks) {
         const container = document.querySelector(".container");
 
+        const actionBlock = document.createElement("div");
+        actionBlock.setAttribute("class","action-block");
+        container.append(actionBlock);        
+
         const listTasks = document.createElement("div");
         listTasks.setAttribute("class","list-tasks");
         container.append(listTasks);
-
-        const actionBlock = document.createElement("div");
-        actionBlock.setAttribute("class","action-block");
-        container.append(actionBlock);
 
         const newTaskButton = document.createElement("button");
         newTaskButton.setAttribute("class","new-task");
@@ -123,7 +126,10 @@ class ListTasksView {
 class AddForm {
     constructor(view, services) {
         this.view = view;
-        this.services = services;
+        this.services = services;        
+        this.typeOfService = "";
+        this.taskOfService = "";
+        this.descriptionText = "";
     }
 
     saveTask(services) {
@@ -132,6 +138,100 @@ class AddForm {
 
     handleCreateTasks() {
         this.view.createTask("create task", this.services);
+    }
+
+    actionCancel(cancelButton) {
+        const actionBlock = document.body.querySelector(".action-block");
+        actionBlock.style.width = "0";
+        cancelButton.style.display = "none";           
+            /* actionBlock.style.opacity = "0"; 
+            setTimeout(() => {
+                actionBlock.style.display = "none"             
+            }, 500); */
+
+    }
+
+    changeService(serviceList, currentElement) {
+        const taskBlock = document.body.querySelector(".task-block");
+        for (let i = 0; i < serviceList.childNodes.length; i++) {
+            for (let j=0; j <  serviceList.childNodes[i].childNodes.length; j++ ) {
+                serviceList.childNodes[i].childNodes[j].style.border = "none";
+            }                
+        }
+        if(currentElement.getAttribute("class") === "service") {
+
+            taskBlock.style.display = "block";            
+            currentElement.childNodes[0].style.border = "1px solid #4c71fe";
+            this.taskOfService = 
+                this.typeOfService === currentElement.innerText.toLowerCase()
+                ? this.taskOfService : "";                        
+
+            this.typeOfService = currentElement.innerText.toLowerCase();
+            taskBlock.childNodes[0].innerText = `${this.typeOfService} tasks`;                    
+            taskBlock.childNodes[1].innerHTML = "";           
+
+            this.services.forEach( item => {            
+                if(item.id == currentElement.id && item.tasks) {                    
+                    let tasks = item.tasks;
+                    tasks.forEach( item => {
+                        const task = document.createElement("span");                                           
+                        task.setAttribute("class","task-name");
+                        task.innerText = item;
+                        taskBlock.childNodes[1].append(task);
+                    });
+                }
+            });// for loop
+            this.changeTask();
+        }
+         
+    }
+
+    chooseTask(taskName, currentElement) {
+        const taskInfo = document.body.querySelector(".task-info");
+        for (let i = 0; i < taskName.childNodes.length; i++) {
+            taskName.childNodes[i].style.border = "none";       
+        }
+        if(currentElement.getAttribute("class") === "task-name") {
+            currentElement.style.border = "1px solid #4c71fe";
+            this.taskOfService = currentElement.innerText.toLowerCase();
+            this.changeTask();
+        }       
+        
+    }
+
+    changeTaskInfo(description) {        
+        this.descriptionText = description.value.toLowerCase();
+        this.changeTask();        
+    }
+
+    changeTask() {
+        const taskInfo = document.body.querySelector(".task-info");
+
+        if(!this.typeOfService) {
+            taskInfo.innerHTML = `${this.descriptionText.bold()}.`;
+        } else if(!this.descriptionText) {
+            if(!this.taskOfService){
+                taskInfo.innerHTML = `I need ${`a ${this.typeOfService}`.bold()}.`;
+            } else {
+                taskInfo.innerHTML = 
+                `I need ${`a ${this.typeOfService}`.bold()} 
+                to ${this.taskOfService.bold()}.`;
+            }            
+        } else if(!this.taskOfService) {
+            taskInfo.innerHTML = 
+                `I need ${`a ${this.typeOfService}`.bold()}, 
+                ${this.descriptionText.bold()}.`;
+        } else {
+            taskInfo.innerHTML = 
+                `I need ${`a ${this.typeOfService}`.bold()} 
+                to ${this.taskOfService.bold()}, 
+                ${this.descriptionText.bold()}.`;
+        }
+    }
+
+    changeLocation(location) {
+        const locationInfo = document.body.querySelector(".location-info");
+        locationInfo.innerText = `My address is ${location}`;
     }
 
 }
@@ -182,53 +282,33 @@ class AddFormControll {
     }
 
     
-    actionforAdd() {
-        const actionBlock = document.body.querySelector(".action-block");
+    actionforAdd() {        
         const cancelButton =  document.body.querySelector(".cancel");
         const location = document.body.querySelector(".input-location");
         const description = document.body.querySelector(".description");
-        const taskInfo = document.body.querySelector(".task-info");
-        const serviceList = document.body.querySelector(".servise-list");
-        const taskBlock = document.body.querySelector(".task-block");
+        const serviceList = document.body.querySelector(".service-list"); 
+        const taskName = document.body.querySelector(".task-name-list"); 
         
-        let taskText = "I need a plumber to unblock a toilet", descriptionText;
 
         description.addEventListener("change", () => { 
-            descriptionText = description.value.toLowerCase().bold(); 
-            if(!taskText) {
-                taskInfo.innerHTML = `${descriptionText}.`;
-            } else {
-                taskInfo.innerHTML = `${taskText}, ${descriptionText}.`;
-            }                    
+            this.model.changeTaskInfo(description);                               
         });
         
         location.addEventListener("change", () => {
-            const locationInfo = document.body.querySelector(".location-info");
-            locationInfo.innerText = `My address is ${location.value}`;
+            this.model.changeLocation(location.value);            
         });
 
         serviceList.addEventListener("click", (event) => {
-            
-            for (let i = 0; i < serviceList.childNodes.length; i++) {
-                for (let j=0; j <  serviceList.childNodes[i].childNodes.length; j++ ) {
-                    serviceList.childNodes[i].childNodes[j].style.border = "none";
-                }                
-            }
-            const currentClick = event.target.parentElement;          
-            taskBlock.style.display = "block";
-            currentClick.childNodes[0].style.border = "1px solid #4c71fe";
-            currentClick.childNodes[0].style.borderRadius = "100%";
-        })
+            const currentElement = event.target.parentElement;
+            this.model.changeService(serviceList, currentElement);  
+        });
 
-        
-        cancelButton.addEventListener("click", () => {
-            actionBlock.style.width = "0";
-            cancelButton.style.display = "none";           
-            /* actionBlock.style.opacity = "0"; 
-            setTimeout(() => {
-                actionBlock.style.display = "none"             
-            }, 500); */
+        taskName.addEventListener("click", (event) => {
+            this.model.chooseTask(taskName, event.target);
+        });
 
+        cancelButton.addEventListener("click", (event) => {
+            this.model.actionCancel(event.target);   
         });
     }
   
@@ -307,7 +387,9 @@ class PubSub {
 
 document.addEventListener("DOMContentLoaded", function() {
 
-    let services = JSON.parse(localStorage.getItem("services")) || [{id: 1, type:"electician"}, {id: 2, type:"plumber"}, {id: 3, type:"gardener"}, {id: 4, type:"housekeeper"}, {id: 5, type:"cook"}];
+    let services = JSON.parse(localStorage.getItem("services")) || [{id: 1, type:"electician"}, 
+    {id: 2, type:"plumber", tasks: ["Unblock toilet", "Unblock a sink", "Fix a water leak", "Install a sink", "Install a shower", "Install a toilet"]}, 
+    {id: 3, type:"gardener"}, {id: 4, type:"housekeeper"}, {id: 5, type:"cook"}];
     
     const listTasksView = new ListTasksView();
     const taskView = new TaskView();
