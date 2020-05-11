@@ -27,28 +27,28 @@ button {
 
 .new-task {
   margin: 20px;
+  margin-bottom: 5px;
   width: 300px;
   height: 50px;
   border-radius: 5px;
   border: 0;
   font-size: 16px;
   font-weight: 500;
-  color: #4c71fe;
+  color: #4c71fe;  
+  border: 2px solid transparent;
   background-color: #fff;
   letter-spacing: 1px;
 }
 
-.new-task:active, 
-.new-task:hover {
-  border: 2px solid;  
-  border-radius: 5px;
-}
 
-.new-task:hover {
+
+.new-task:hover,
+.delete-button:hover {
   border-color: #5174fe98;
 }
 
-.new-task:active {
+.new-task:active,
+.delete-button:active {
   border-color: #5174fed8;
 }
 
@@ -114,17 +114,29 @@ textarea {
 
 .description {       
     resize: none;
+    height: 30px;
 }
 
-.action-button {  
+.action-button,
+.edit-button {  
   background-color: #4c71fe;
-  border-radius: 3px;
+  border-radius: 5px;
   color: #fff;
   text-transform: uppercase;
   letter-spacing: 1px;
   margin: 10px;
   padding: 5px 10px;
-  font-size: 16px;
+  font-size: 16px;      
+  border: 2px solid transparent;
+}
+
+.delete-button {
+  background-color: #fff;
+  border-radius: 5px;
+  color: #4c71fe;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 5px 10px;
 }
 
 .task-block {
@@ -158,7 +170,7 @@ textarea {
   display: flex;
   flex-direction: row;
   text-align: center;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-wrap:wrap;
 }
 
@@ -169,3 +181,78 @@ textarea {
   border-radius: 30px;
 }
 
+/* .chosen-elem {
+  border: 1px solid 
+
+} */
+
+.current-tasks {
+  min-width: 300px;  
+}
+
+.tasks-list {
+  max-height: 520px;
+  width: 320px;
+  overflow: auto;
+}
+
+
+.task {
+  margin-bottom: 5px;
+  margin-left: 20px;
+  width: 300px;
+  border-radius: 5px;
+  border: 0;
+  font-size: 18px;
+  background-color: #fff;
+  letter-spacing: 0;  
+  font-weight: 500;
+}
+.task  p {
+  padding: 20px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+
+.task  p:first-child {
+  /* margin-left: 20px; */
+  padding: 20px;
+  padding-bottom: 5px;
+  color: #9e9e9e;
+  font-weight: 400;
+}
+
+
+.edit-button {  
+  margin: 0;
+  margin-left: 20px;
+}
+
+.delete-button {
+  border: 2px solid transparent;
+}
+
+.edit-button,
+.delete-button {
+  font-size: 14px;
+  margin-bottom: 10px;
+  margin-top: 10px;    
+}
+
+.edit-button:active,
+.action-button:active {
+  border-color: #fff;
+}
+
+.tasks-list::-webkit-scrollbar,
+.action-block::-webkit-scrollbar
+{
+    width:0px;
+}
+.tasks-list::-webkit-scrollbar,
+.action-block::-webkit-scrollbar
+{
+    background-color:transparent;
+}
+
+.
