@@ -58,18 +58,33 @@ app.get('/services/:id', (req, res) => {
         }
         res.send(docs);
     })
-})
+});
 
-app.post('/tasks', (req, res) => {
-    let tasks = {
+app.post('/services', (req, res) => {
+    let service = {
         type: req.body.type, 
-        dateCreating: "Mondey, Jun 26, 16:00", 
-        taskText: "I need a plumber to unblock toilet", 
-        dscription: "", 
-        location: "" 
+        tasks: req.body.tasks
     }
 
-    db.collection('tasks').insertOne(student, err => {
+    db.collection('services').insertOne(service, err => {
+        if(err) {
+            console.error(err);
+            return res.sendStatus(500);
+        }
+        res.send(service);
+    })
+});
+
+app.post('/tasks', (req, res) => {
+    let task = {
+        type: req.body.type, 
+        dateCreating: req.body.dateCreating, 
+        taskText: req.body.taskText, 
+        description: req.body.description, 
+        location: req.body.location 
+    }
+
+    db.collection('tasks').insertOne(task, err => {
         if(err) {
             console.error(err);
             return res.sendStatus(500);
@@ -79,12 +94,18 @@ app.post('/tasks', (req, res) => {
 });
 
 app.put('/tasks/:id', (req, res) => {
-    db.collection('tasks').updateOne({_id: ObjectID(req.params.id)}, { $set: {name: req.body.name}}, err => {
+    db.collection('tasks').updateOne({_id: ObjectID(req.params.id)}, { 
+        $set: {type: req.body.type}, 
+        $set: {dateCreating: req.body.dateCreating},
+        $set: {taskText: req.body.taskText},
+        $set: {description: req.body.description},
+        $set: {location: req.body.location}
+    }, err => {
         if(err) {
             console.error(err);
             return res.sendStatus(500);
         }
-        res.send(student);
+        res.send(task);
     });
     res.sendStatus(200);
 });
@@ -95,7 +116,7 @@ app.delete('/tasks/:id', (req, res) => {
             console.error(err);
             return res.sendStatus(500);
         }
-        res.send(student);
+        res.send(task);
     });
     res.sendStatus(200);
 })

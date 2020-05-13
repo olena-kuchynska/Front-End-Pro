@@ -255,8 +255,8 @@ class ListTasksView {
 }
 
 class AddForm {
-    constructor(services) {
-        this.services = services;
+    constructor() {
+        this.services;
         this.typeOfService = "";
         this.taskOfService = "";/* 
         this.taskText = ""; */
@@ -268,6 +268,10 @@ class AddForm {
     }
 
     getServices() {
+        fetch("http://localhost:3333/services")
+        .then(infoServices => infoServices.json())
+        .then(infoServices => { this.services = infoServices; })
+        .catch(err => console.error(`Connection Error:${err}`));
         return this.services;
     }
 
@@ -289,16 +293,24 @@ class EditForm {
 }
 
 class ListForm {
-    constructor(tasks) {
-        this.tasks = tasks;
+    constructor() {
+        this.tasks = "";
     }
 
     saveTask(tasks) {
         localStorage.setItem("services", JSON.stringify(tasks));
     }
 
-    getTasks() {
+    getTasks() {        
+        this.tasks = fetch("/tasks")
+        .then(infoTasks => infoTasks.json())
+        /* .then(infoTasks => this.tasks = infoTasks) */
+        .catch(err => console.error(`Connection Error:${err}`));
         return this.tasks;
+    }
+
+    get() {
+        
     }
 
     /* deleteTask = (currentTask) => {
@@ -415,10 +427,10 @@ class ListFormControll {
             this.view.resizeWindow();
         });
 
-        const editButton = document.body.querySelector(".edit-button");
+        /* const editButton = document.body.querySelector(".edit-button");
         editButton.addEventListener("click", () => {
             this.subscribers.publish("addEvent");
-        });
+        }); */
 
         const newTaskButton =  document.body.querySelector(".new-task");
         newTaskButton.addEventListener("click", () => this.subscribers.publish("addEvent")); 
@@ -457,16 +469,16 @@ document.addEventListener("DOMContentLoaded", function() {
     {id: 3, type:"gardener"}, {id: 4, type:"housekeeper"}, {id: 5, type:"cook"}];
 
     let tasks = JSON.parse(localStorage.getItem("tasks")) || 
-    [{id: 1,type:"plumber", dateCreating: "Mondey, Jun 26, 16:00", taskText: "I need a plumber to unblock toilet", dscription: "", location: "" }, 
-    {id: 2, type:"electician", dateCreating: "Mondey, Jun 26, 16:00", taskText: "I need a plumber to unblock toilet", dscription: "", location: "" },
-    {id: 3, type:"electician", dateCreating: "Mondey, Jun 26, 16:00", taskText: "I need a plumber to unblock toilet", dscription: "", location: "" },
-    {id: 4, type:"electician", dateCreating: "Mondey, Jun 26, 16:00", taskText: "I need a plumber to unblock toilet", dscription: "", location: "" }];
+    [{id: 1,type:"plumber", dateCreating: "Mondey, Jun 26, 16:00", taskText: "I need a plumber to unblock toilet", description: "", location: "" }, 
+    {id: 2, type:"electician", dateCreating: "Mondey, Jun 26, 16:00", taskText: "I need a plumber to unblock toilet", description: "", location: "" },
+    {id: 3, type:"electician", dateCreating: "Mondey, Jun 26, 16:00", taskText: "I need a plumber to unblock toilet", description: "", location: "" },
+    {id: 4, type:"electician", dateCreating: "Mondey, Jun 26, 16:00", taskText: "I need a plumber to unblock toilet", description: "", location: "" }];
     
     const listTasksView = new ListTasksView();
     const taskView = new TaskView();
 
-    const listForm = new ListForm(tasks);
-    const addForm = new AddForm(services);
+    const listForm = new ListForm();
+    const addForm = new AddForm();
 
     const subscribers = new PubSub();
 
