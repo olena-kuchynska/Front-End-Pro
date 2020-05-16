@@ -77,7 +77,8 @@ app.post('/services', (req, res) => {
 
 app.post('/tasks', (req, res) => {
     let task = {
-        type: req.body.type, 
+        typeOfService: req.body.typeOfService,
+        taskOfService: req.body.taskOfService, 
         dateCreating: req.body.dateCreating, 
         taskText: req.body.taskText, 
         description: req.body.description, 
@@ -89,13 +90,14 @@ app.post('/tasks', (req, res) => {
             console.error(err);
             return res.sendStatus(500);
         }
-        res.send(tasks);
+        res.sendStatus(200);
     })
 });
 
 app.put('/tasks/:id', (req, res) => {
     db.collection('tasks').updateOne({_id: ObjectID(req.params.id)}, { 
-        $set: {type: req.body.type}, 
+        $set: {typeOfService: req.body.typeOfService}, 
+        $set: {taskOfService: req.body.taskOfService},
         $set: {dateCreating: req.body.dateCreating},
         $set: {taskText: req.body.taskText},
         $set: {description: req.body.description},
@@ -105,7 +107,6 @@ app.put('/tasks/:id', (req, res) => {
             console.error(err);
             return res.sendStatus(500);
         }
-        res.send(task);
     });
     res.sendStatus(200);
 });
@@ -116,7 +117,6 @@ app.delete('/tasks/:id', (req, res) => {
             console.error(err);
             return res.sendStatus(500);
         }
-        res.send(task);
     });
     res.sendStatus(200);
 })

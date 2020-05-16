@@ -23,6 +23,7 @@ button {
   color: inherit;
   background-color: transparent;
   cursor: pointer;
+  text-transform: uppercase;
 }
 
 .new-task {
@@ -254,3 +255,5 @@ textarea {
 {
     background-color:transparent;
 }
+
+
