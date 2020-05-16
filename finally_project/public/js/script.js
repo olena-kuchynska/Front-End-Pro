@@ -5,7 +5,7 @@ class TaskView {
         this.descriptionText;
     }
 
-    showTaskForm(action, services) {
+    showTaskForm(action) {
         this.typeOfService = "";
         this.taskOfService = "";
         this.descriptionText = "";
@@ -68,20 +68,6 @@ class TaskView {
         serviceBlock.setAttribute("class","service-list");
         typeService.append(serviceBlock);
 
-        services.forEach( item => {            
-            const service = document.createElement("div");
-            service.setAttribute("class","service");
-            service.id = item.id;
-            serviceBlock.append(service);
-            const serviceName = document.createElement("p");            
-            serviceName.innerText = item.type;
-            service.append(serviceName);
-            const imageButton = document.createElement("button");
-            imageButton.setAttribute("class","type-button");
-            imageButton.style.background = `url(./images/${item.type}.png) no-repeat center center`;
-            service.prepend(imageButton);
-        });
-
         const taskBlock = document.createElement("div");
         taskBlock.setAttribute("class","task-block");
         actionBlock.append(taskBlock);
@@ -109,6 +95,23 @@ class TaskView {
         descriptionBlock.append(inputDescription);
     }
 
+    showServices(services) {
+        const serviceBlock = document.body.querySelector(".service-list");
+        services.forEach( item => {            
+            const service = document.createElement("div");
+            service.setAttribute("class","service");
+            service.id = item["_id"];
+            serviceBlock.append(service);
+            const serviceName = document.createElement("p");            
+            serviceName.innerText = item.type;
+            service.append(serviceName);
+            const imageButton = document.createElement("button");
+            imageButton.setAttribute("class","type-button");
+            imageButton.style.background = `url(./images/${item.type}.png) no-repeat center center`;
+            service.prepend(imageButton);
+        });
+    }
+
     actionCancel(cancelButton) {
         const actionBlock = document.body.querySelector(".action-block");
         actionBlock.style.width = "0";
@@ -125,14 +128,15 @@ class TaskView {
         }      
 
         taskBlock.style.display = "block";            
-        currentElement.childNodes[0].style.border = "1px solid #4c71fe";
+        currentElement.childNodes[0].style.border = "1px solid #4c71fe";        
+        let checkedService = currentElement.innerText.toLowerCase();
         this.taskOfService = "";
         this.typeOfService = currentElement.innerText.toLowerCase();
-        taskBlock.childNodes[0].innerText = `${this.typeOfService} tasks`;                    
+        taskBlock.childNodes[0].innerText = `${checkedService} tasks`;                    
         taskBlock.childNodes[1].innerHTML = "";           
 
         services.forEach( item => {            
-            if(item.id == currentElement.id && item.tasks) {                    
+            if(item["_id"] === currentElement.id && item.tasks) {                    
                 let tasks = item.tasks;
                 tasks.forEach( item => {
                     const task = document.createElement("span");                                           
@@ -191,14 +195,18 @@ class TaskView {
     changeLocation(location) {
         const locationInfo = document.body.querySelector(".location-info");
         locationInfo.innerText = `My address is ${location}`;
-    }  
+    }
+
+    getTaskInfo() {
+        return this.typeOfService, this.taskOfService, this.descriptionText;
+    }
 
 
     
 }
 
 class ListTasksView {
-    showTask(tasks) {
+    showTask() {
         const container = document.querySelector(".container");
 
         const actionBlock = document.createElement("div");
@@ -216,30 +224,34 @@ class ListTasksView {
 
         const tasksList = document.createElement("div");
         tasksList.setAttribute("class","tasks-list");
-        currentTasks.append(tasksList);
+        currentTasks.append(tasksList);       
         
-        if(tasks) {
-            tasks.forEach(item => {
-                const task = document.createElement("div");
-                task.setAttribute("class","task");
-                task.id = item.id;
-                tasksList.append(task);
-                const dateCreating = document.createElement("p");            
-                dateCreating.innerText = item.dateCreating;
-                task.append(dateCreating);
-                const taskTest = document.createElement("p");            
-                taskTest.innerText = item.taskText;
-                task.append(taskTest);
-                const editButton = document.createElement("button");
-                editButton.setAttribute("class","edit-button");
-                editButton.innerText = "edit";
-                task.append(editButton);
-                const deleteButton = document.createElement("button");
-                deleteButton.setAttribute("class","delete-button");
-                deleteButton.innerText = "delete";
-                task.append(deleteButton);
-            });
-        }      
+        }
+
+        showTaskList(tasks) {
+            const tasksList = document.body.querySelector(".tasks-list");
+            if(tasks) {
+                tasks.forEach(item => {
+                    const task = document.createElement("div");
+                    task.setAttribute("class","task");
+                    task.id = item.id;
+                    tasksList.append(task);
+                    const dateCreating = document.createElement("p");            
+                    dateCreating.innerText = item.dateCreating;
+                    task.append(dateCreating);
+                    const taskTest = document.createElement("p");            
+                    taskTest.innerText = item.taskText;
+                    task.append(taskTest);
+                    const editButton = document.createElement("button");
+                    editButton.setAttribute("class","edit-button");
+                    editButton.innerText = "edit";
+                    task.append(editButton);
+                    const deleteButton = document.createElement("button");
+                    deleteButton.setAttribute("class","delete-button");
+                    deleteButton.innerText = "delete";
+                    task.append(deleteButton);
+                });
+        }
 
     }
 
@@ -248,42 +260,57 @@ class ListTasksView {
         let element = document.body.querySelector(".new-task");
         let marginTop = parseInt(getComputedStyle(element, true).marginTop);
         let marginBottom = parseInt(getComputedStyle(element, true).marginBottom);
-        console.log(element.offsetHeight,marginTop ,marginBottom);
-        listTask.style.maxHeight = `calc(${document.documentElement.clientHeight}px - ${element.offsetHeight + marginTop + marginBottom}px`;
+        listTask.style.maxHeight = `calc(
+                ${document.documentElement.clientHeight}px - 
+                ${element.offsetHeight + marginTop + marginBottom}px
+            )`;
     }    
     
 }
 
 class AddForm {
-    constructor() {
+    constructor(view) {
+        this.view = view;
         this.services;
-        this.typeOfService = "";
-        this.taskOfService = "";/* 
-        this.taskText = ""; */
-        this.descriptionText = "";
-    }
-
-    saveTask(services) {
-        localStorage.setItem("services", JSON.stringify(services));
     }
 
     getServices() {
-        fetch("http://localhost:3333/services")
+        fetch("/services")
         .then(infoServices => infoServices.json())
-        .then(infoServices => { this.services = infoServices; })
+        .then(infoServices => {
+            this.services = infoServices;
+            this.view.showServices(infoServices);            
+        })
         .catch(err => console.error(`Connection Error:${err}`));
-        return this.services;
     }
 
     addTask() {
+        let task = {
+            type: "",
+            dateCreating: Date.now(),
+            taskText:  "",
+            description: "",
+            location:  ""
+        }
+        
+        /* fetch("/tasks", {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(task)
+          })
+        .then(response => response.json())
+        .catch(err => console.error(`Connection Error:${err}`)); */
+
 
     }
 
 }
 
 class EditForm {
-    constructor(tasks) {
-        this.tasks = tasks;
+    constructor(view) {
+        this.view = view;
     }    
 
     putTask() {
@@ -293,24 +320,15 @@ class EditForm {
 }
 
 class ListForm {
-    constructor() {
-        this.tasks = "";
+    constructor(view) {
+        this.view = view;
     }
 
-    saveTask(tasks) {
-        localStorage.setItem("services", JSON.stringify(tasks));
-    }
-
-    getTasks() {        
-        this.tasks = fetch("/tasks")
+    getTasks() {    
+        fetch("/tasks")
         .then(infoTasks => infoTasks.json())
-        /* .then(infoTasks => this.tasks = infoTasks) */
+        .then(infoTasks => this.view.showTaskList(infoTasks))
         .catch(err => console.error(`Connection Error:${err}`));
-        return this.tasks;
-    }
-
-    get() {
-        
     }
 
     /* deleteTask = (currentTask) => {
@@ -330,11 +348,11 @@ class AddFormControll {
         this.model = model;
         this.view = view;
         this.subscribers = subscribers;
-        this.services = this.model.getServices();
     }
 
     handleCreateTasks() {
-        this.view.showTaskForm("create task", this.services);
+        this.view.showTaskForm("create task");
+        this.model.getServices();        
         this.actionforAdd();
     }
 
@@ -345,6 +363,7 @@ class AddFormControll {
         const description = document.body.querySelector(".description");
         const serviceList = document.body.querySelector(".service-list"); 
         const taskName = document.body.querySelector(".task-name-list"); 
+        const actionButton = document.body.querySelector(".action-button");
         
 
         description.addEventListener("change", () => { 
@@ -358,7 +377,7 @@ class AddFormControll {
         serviceList.addEventListener("click", (event) => {
             let currentElement = event.target.parentElement;
             if(currentElement.getAttribute("class") === "service") {
-                this.view.changeService(this.services, serviceList, currentElement);
+                this.view.changeService(this.model.services, serviceList, currentElement);
             }     
         });
 
@@ -372,6 +391,14 @@ class AddFormControll {
         cancelButton.addEventListener("click", (event) => {
             this.view.actionCancel(event.target);   
         });
+
+        actionButton.addEventListener("click", (event) => {
+            if(event.target.innerText.toLowerCase() === "create task") {
+                let taskInfo = this.view.getTaskInfo();
+                console.log(taskInfo);
+                this.model.addTask();
+            }
+        })
     }
   
 
@@ -395,13 +422,15 @@ class ListFormControll {
         this.model = model;        
         this.view = view;
         this.subscribers = subscribers;
-        this.tasks = this.model.getTasks();
+        this.tasks;
     }
 
     handleShowTasks() {
-        this.view.showTask(this.tasks);
+        this.view.showTask();
+        this.model.getTasks();
         this.actionForShow();
     }
+
 
     loadForm() {
 
@@ -477,8 +506,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const listTasksView = new ListTasksView();
     const taskView = new TaskView();
 
-    const listForm = new ListForm();
-    const addForm = new AddForm();
+    const listForm = new ListForm(listTasksView);
+    const addForm = new AddForm(taskView);
 
     const subscribers = new PubSub();
 
