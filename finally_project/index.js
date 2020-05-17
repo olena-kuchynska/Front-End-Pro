@@ -27,7 +27,17 @@ app.get('/tasks', (req, res) => {
             return res.sendStatus(500);
         }
         res.send(docs);
-    })
+    });
+});
+
+app.get('/services', (req, res) => {
+    db.collection('services').find().toArray((err, docs) => {
+        if(err) {
+            console.error(err);
+            return res.sendStatus(500);
+        }
+        res.send(docs);
+    });
 });
 
 app.get('/tasks/:id', (req, res) => {
@@ -37,17 +47,7 @@ app.get('/tasks/:id', (req, res) => {
             return res.sendStatus(500);
         }
         res.send(docs);
-    })
-})
-
-app.get('/services', (req, res) => {
-    db.collection('services').find().toArray((err, docs) => {
-        if(err) {
-            console.error(err);
-            return res.sendStatus(500);
-        }
-        res.send(docs);
-    })
+    });
 });
 
 app.get('/services/:id', (req, res) => {
@@ -57,7 +57,7 @@ app.get('/services/:id', (req, res) => {
             return res.sendStatus(500);
         }
         res.send(docs);
-    })
+    });
 });
 
 app.post('/services', (req, res) => {
@@ -72,7 +72,7 @@ app.post('/services', (req, res) => {
             return res.sendStatus(500);
         }
         res.send(service);
-    })
+    });
 });
 
 app.post('/tasks', (req, res) => {
@@ -91,18 +91,33 @@ app.post('/tasks', (req, res) => {
             return res.sendStatus(500);
         }
         res.sendStatus(200);
-    })
+    });
 });
 
 app.put('/tasks/:id', (req, res) => {
-    db.collection('tasks').updateOne({_id: ObjectID(req.params.id)}, { 
-        $set: {typeOfService: req.body.typeOfService}, 
-        $set: {taskOfService: req.body.taskOfService},
-        $set: {dateCreating: req.body.dateCreating},
-        $set: {taskText: req.body.taskText},
-        $set: {description: req.body.description},
-        $set: {location: req.body.location}
-    }, err => {
+    db.collection('tasks').updateOne({_id: ObjectID(req.params.id)},
+        {$set: {
+            typeOfService: req.body.typeOfService,
+            taskOfService: req.body.taskOfService, 
+            dateCreating: req.body.dateCreating, 
+            taskText: req.body.taskText, 
+            description: req.body.description, 
+            location: req.body.location
+        }}, err => {
+        if(err) {
+            console.error(err);
+            return res.sendStatus(500);
+        }
+    });
+    res.sendStatus(200);
+});
+
+app.put('/services/:id', (req, res) => {
+    db.collection('services').updateOne({_id: ObjectID(req.params.id)},
+        {$set: {
+            type: req.body.type,
+            tasks: req.body.tasks, 
+        }}, err => {
         if(err) {
             console.error(err);
             return res.sendStatus(500);
@@ -126,5 +141,5 @@ client.connect(err => {
 
     db = client.db(dbname); 
 
-    app.listen(3333, () => console.log('Server running...'))
+    app.listen(3000, () => console.log('Server running...'))
 });
