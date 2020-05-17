@@ -50,8 +50,6 @@ class TaskView {
 
         const inputLocation = document.createElement("input");
         inputLocation.setAttribute("class","input-location");
-        /* inputLocation.setAttribute("required","required"); */       
-        inputLocation.placeholder = "Enter location";
         locationBlock.append(inputLocation);
 
         const typeService = document.createElement("div");
@@ -96,6 +94,7 @@ class TaskView {
 
     showServices(services) {
         const serviceBlock = document.body.querySelector(".service-list");
+
         services.forEach( item => {            
             const service = document.createElement("div");
             service.setAttribute("class","service");
@@ -117,21 +116,22 @@ class TaskView {
         actionBlock.style.width = "0";
     }
 
-    changeService(services, currentElement) {
-        
+    changeService(services, currentElement) {        
         const serviceList = document.body.querySelector(".service-list");
         const taskBlock = document.body.querySelector(".task-block");
+
         for (let i = 0; i < serviceList.childNodes.length; i++) {
             for (let j=0; j <  serviceList.childNodes[i].childNodes.length; j++ ) {
                 serviceList.childNodes[i].childNodes[j].style.border = "none";
             }                
-        }      
+        }
 
-                    
-        currentElement.childNodes[0].style.border = "1px solid #4c71fe";        
+        currentElement.childNodes[0].style.border = "1px solid #4c71fe";
+
         let checkedService = currentElement.innerText.toLowerCase();
         this.taskOfService = "";
         this.typeOfService = checkedService;
+
         taskBlock.childNodes[0].innerText = `${checkedService} tasks`;                    
         taskBlock.childNodes[1].innerHTML = "";           
 
@@ -145,20 +145,32 @@ class TaskView {
                     taskBlock.childNodes[1].append(task);
                 });
             }
-        });// for loop
+        });
+
         taskBlock.style.display = "block";
         this.changeTask();                
     }
 
     chooseTask(currentElement) {        
         const taskName = document.body.querySelector(".task-name-list");
+
         for (let i = 0; i < taskName.childNodes.length; i++) {
             taskName.childNodes[i].style.border = "none";       
         }       
+
         currentElement.style.border = "1px solid #4c71fe";
-        this.taskOfService = currentElement.innerText.toLowerCase();
-        this.changeTask();      
         
+        this.taskOfService = currentElement.innerText.toLowerCase();
+        this.changeTask(); 
+    }
+
+    loadLocation(infoLocation) {        
+        const inputLocation = document.body.querySelector(".input-location");
+        inputLocation.value = `${infoLocation.region}, ${infoLocation.city}`;
+        this.location = inputLocation.value;
+
+        const location = document.body.querySelector(".location-info");
+        location.innerText = `My address is ${this.location}`;  
     }
 
     changeTaskInfo(description) {      
@@ -189,6 +201,7 @@ class TaskView {
                 to ${this.taskOfService.bold()}, 
                 ${this.descriptionText.bold()}.`;
         }
+
         let index = taskInfo.innerText.indexOf(",")
         this.taskText = taskInfo.innerText.slice(0,index);
     }
@@ -200,14 +213,19 @@ class TaskView {
     }
 
     getTaskInfo() {
-        return {typeOfService: this.typeOfService, taskOfService: this.taskOfService, taskText: this.taskText, description: this.descriptionText, location: this.location};
+        return {
+            typeOfService: this.typeOfService, 
+            taskOfService: this.taskOfService, 
+            taskText: this.taskText, 
+            description: this.descriptionText, 
+            location: this.location
+        };
     }
 
     loadEditForm(task, services) { 
         const inputDescription = document.body.querySelector(".description");
         const inputLocation = document.body.querySelector(".input-location");
-        const serviceBlock = document.body.querySelector(".service-list").childNodes;
-        
+        const serviceBlock = document.body.querySelector(".service-list").childNodes;        
 
         for(let i = 0; i < serviceBlock.length; i++) {
             if(serviceBlock[i].innerText.toLowerCase() === task.typeOfService) {        
@@ -222,16 +240,13 @@ class TaskView {
                 this.chooseTask(taskList[i]);
             }
         }
-        
+
         inputDescription.innerText = task.description;
         inputLocation.value = task.location;
         this.changeTaskInfo(task.description);        
         this.changeLocation(task.location);
         this.changeTask();
-    }
-
-
-    
+    }    
 }
 
 class ListTasksView {
@@ -253,8 +268,7 @@ class ListTasksView {
 
         const tasksList = document.createElement("div");
         tasksList.setAttribute("class","tasks-list");
-        currentTasks.append(tasksList);       
-        
+        currentTasks.append(tasksList);  
     }
 
     showTaskList(tasks) {
@@ -299,18 +313,19 @@ class ListTasksView {
 
     resizeWindow() {
         const listTask = document.body.querySelector(".tasks-list");
+
         let element = document.body.querySelector(".new-task");
         let marginTop = parseInt(getComputedStyle(element, true).marginTop);
         let marginBottom = parseInt(getComputedStyle(element, true).marginBottom);
+
         listTask.style.maxHeight = `calc(
                 ${document.documentElement.clientHeight}px - 
                 ${element.offsetHeight + marginTop + marginBottom}px
             )`;
-    }    
-    
+    }     
 }
 
-class AddForm {
+class TaskForm {
     constructor(view) {
         this.view = view;
         this.services;
@@ -339,7 +354,15 @@ class AddForm {
         })
         .catch(err => console.error(`Connection Error:${err}`));        
     }
-    
+
+    getLocation() {
+        fetch("/location")
+        .then(infoLocation => infoLocation.json())
+        .then(infoLocation => {
+            this.view.loadLocation(infoLocation);            
+        })
+        .catch(err => console.error(`Connection Error:${err}`));
+    }   
 
     addTask = (task) => {
         if(task.typeOfService && task.location) {         
@@ -390,10 +413,9 @@ class ListForm {
         .then(response => response)
         .catch(err => console.error(`Connection Error:${err}`));
     }
-
 }
 
-class AddFormControll {
+class TaskFormControll {
     constructor(model, view, subscribers) {
         this.model = model;
         this.view = view;
@@ -402,25 +424,24 @@ class AddFormControll {
 
     handleCreateTasks() {
         this.view.showTaskForm("create task");
-        this.model.getServices();        
-        this.actionforAdd();
+        this.model.getServices(); 
+        this.model.getLocation();        
+        this.actionforForm();
     }
 
     handleEditForm(currentTask) {
         this.model.getServices(currentTask);
         this.view.showTaskForm("edit task");   
-        this.actionforAdd();
-        /* this.model.getCurrentTask(currentTask);  */
+        this.actionforForm();
     }
     
-    actionforAdd() {        
+    actionforForm() {        
         const cancelButton =  document.body.querySelector(".cancel");
         const location = document.body.querySelector(".input-location");
         const description = document.body.querySelector(".description");
         const serviceList = document.body.querySelector(".service-list"); 
         const taskName = document.body.querySelector(".task-name-list"); 
-        const actionButton = document.body.querySelector(".action-button");
-        
+        const actionButton = document.body.querySelector(".action-button");        
 
         description.addEventListener("input", () => { 
             this.view.changeTaskInfo(description.value);                               
@@ -465,12 +486,9 @@ class AddFormControll {
             }
             this.subscribers.publish("showEvent");
             this.view.actionCancel();
-        })
+        });
     }
-  
-
 }
-
 
 class ListFormControll {
     constructor(model, view, subscribers) {
@@ -489,7 +507,6 @@ class ListFormControll {
     handleGetTasks() {
         this.model.getTasks();
     }
-
 
     actionForShow() {
         const actions = document.body.querySelector(".tasks-list");    
@@ -514,8 +531,6 @@ class ListFormControll {
 
 }
 
-
-
 class PubSub {
     constructor() {
         this.subscribers = {};
@@ -535,27 +550,24 @@ class PubSub {
     }
 }
 
-
-
-
 document.addEventListener("DOMContentLoaded", function() {
 
     const listTasksView = new ListTasksView();
     const taskView = new TaskView();
 
     const listForm = new ListForm(listTasksView);
-    const addForm = new AddForm(taskView);
+    const taskForm = new TaskForm(taskView);
 
     const subscribers = new PubSub();
 
 
     const listController = new ListFormControll(listForm, listTasksView, subscribers);
-    const addController = new AddFormControll(addForm, taskView, subscribers);
+    const taskFormController = new TaskFormControll(taskForm, taskView, subscribers);
 
-    subscribers.subscribe("addEvent", addController.handleCreateTasks.bind(addController));
+    subscribers.subscribe("addEvent", taskFormController.handleCreateTasks.bind(taskFormController));
     subscribers.subscribe("showEvent", listController.handleGetTasks.bind(listController));
-    subscribers.subscribe("editEvent", addController.handleEditForm.bind(addController));
+    subscribers.subscribe("editEvent", taskFormController.handleEditForm.bind(taskFormController));
     
     listController.handleShowTasks();    
     
-    });
+});

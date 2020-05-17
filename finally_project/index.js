@@ -1,6 +1,6 @@
 const path = require('path'); // module for working with path
 const express = require('express');
-/* const request = require('request'); */
+const request = require('request');
 const bodyParser = require('body-parser');
 let MongoClient = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
@@ -134,12 +134,22 @@ app.delete('/tasks/:id', (req, res) => {
         }
     });
     res.sendStatus(200);
-})
+});
+
+app.get('/location', (req, res) => {
+    request('https://ipinfo.io', (err, respons, body) => {
+    if(err) {
+        console.error(err);
+        return res.sendStatus(500);
+    }
+    return res.send(body);
+  });
+});
 
 client.connect(err => {
     console.log('Connection success');
 
     db = client.db(dbname); 
 
-    app.listen(3000, () => console.log('Server running...'))
+    app.listen(3333, () => console.log('Server running...'))
 });
