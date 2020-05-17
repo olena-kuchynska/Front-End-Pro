@@ -4,18 +4,26 @@ const request = require('request');
 const bodyParser = require('body-parser');
 let MongoClient = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
+const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-dev-middleware');
 
 let app = express(); //creating server
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/public'));
 
-let db;
- 
+let db; 
 
 const url = 'mongodb://localhost:27017';
 const dbname = "myDB";
 const client = new MongoClient(url); //conection
+
+const config = require('./webpack.config.js');
+const compiler = webpack(config);
+
+app.use(webpackDevMiddleware(compiler, {
+    publicPath: config.output.publicPath
+}));
 
 
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
