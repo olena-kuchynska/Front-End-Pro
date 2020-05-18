@@ -6,7 +6,7 @@ export default class TaskForm {
     }
 
     getServices(currentTask) {
-        fetch("/services")
+        fetch('/services')
         .then(infoServices => infoServices.json())
         .then(infoServices => {
             this.services = infoServices;
@@ -29,7 +29,7 @@ export default class TaskForm {
     }
 
     getLocation() {
-        fetch("/location")
+        fetch('/location')
         .then(infoLocation => infoLocation.json())
         .then(infoLocation => {
             this.view.loadLocation(infoLocation);            
@@ -39,7 +39,7 @@ export default class TaskForm {
 
     addTask(task) {
         if(task.typeOfService && task.location) {         
-            fetch("/tasks", {
+            fetch('/tasks', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -49,7 +49,7 @@ export default class TaskForm {
             .then(response => response)
             .catch(err => console.error(`Connection Error:${err}`));
         } else {
-            alert("Enter all data, please!!");
+            alert('Enter all data, please!!');
         }
     }
 

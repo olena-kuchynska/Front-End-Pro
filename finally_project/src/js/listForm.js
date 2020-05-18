@@ -4,7 +4,7 @@ export default class ListForm {
     }
 
     getTasks() {    
-        fetch("/tasks")
+        fetch('/tasks')
         .then(infoTasks => infoTasks.json())
         .then(infoTasks => this.view.showTaskList(infoTasks))
         .catch(err => console.error(`Connection Error:${err}`));

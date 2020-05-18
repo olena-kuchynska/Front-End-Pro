@@ -15,7 +15,7 @@ app.use(express.static(__dirname + '/public'));
 let db; 
 
 const url = 'mongodb://localhost:27017';
-const dbname = "myDB";
+const dbname = 'myDB';
 const client = new MongoClient(url); //conection
 
 const config = require('./webpack.config.js');

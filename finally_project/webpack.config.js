@@ -7,7 +7,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports =  {  
         mode: 'production',
-        entry: __dirname + "/src/js/script.js",
+        entry: __dirname + '/src/js/script.js',
         output: {
             path: __dirname + '/dist', 
             filename: 'main.js',  
@@ -39,7 +39,7 @@ module.exports =  {
             new MiniCssExtractPlugin(),
             new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }), 
             new HtmlWebpackPlugin({
-                template: __dirname + "/src/public/index.html"
+                template: __dirname + '/src/public/index.html'
             }),
             new CopyWebpackPlugin( {
                 patterns: [

@@ -17,24 +17,24 @@ export default class ListFormControll {
     }
 
     actionForShow() {
-        const actions = document.body.querySelector(".tasks-list");    
-        actions.addEventListener("click", (events) => {
+        const actions = document.body.querySelector('.tasks-list');    
+        actions.addEventListener('click', (events) => {
             let currentElement = events.target;
             let currentTask = currentElement.parentElement;
-            if(currentElement.getAttribute("class") === "delete-button") {
+            if(currentElement.getAttribute('class') === 'delete-button') {
                 this.model.deleteTask(currentTask);
                 this.handleGetTasks();
-            } else if(currentElement.getAttribute("class") === "edit-button") {
-                this.subscribers.publish("editEvent", currentTask);                
+            } else if(currentElement.getAttribute('class') === 'edit-button') {
+                this.subscribers.publish('editEvent', currentTask);                
             }            
         });    
         
-        window.addEventListener("resize", () => {
+        window.addEventListener('resize', () => {
             this.view.resizeWindow();
         });
 
-        const newTaskButton =  document.body.querySelector(".new-task");
-        newTaskButton.addEventListener("click", () => this.subscribers.publish("addEvent")); 
+        const newTaskButton =  document.body.querySelector('.new-task');
+        newTaskButton.addEventListener('click', () => this.subscribers.publish('addEvent')); 
     }    
 
 }
