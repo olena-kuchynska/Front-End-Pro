@@ -154,10 +154,20 @@ app.get('/location', (req, res) => {
   });
 });
 
+const open = require('open');
+const port_number = 3333;
+
+let target_entry = 'http://localhost:' + port_number;
+
 client.connect(err => {
     console.log('Connection success');
 
     db = client.db(dbname); 
 
-    app.listen(3333, () => console.log('Server running...'))
+    app.listen(port_number, () => {
+        console.log('Server running...');
+        console.log('Listening at localhost:' + port_number );
+        console.log('Opening your system browser...');
+        open(target_entry);
+    })  
 });
